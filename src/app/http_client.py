@@ -2,7 +2,7 @@ import socket
 import json  
 
 class HTTPClient:  
-    def __init__(self, host='localhost', port=5001):  
+    def __init__(self, host='1.94.23.202', port=80):  
         self.host = host  
         self.port = port  
         self.token = None  

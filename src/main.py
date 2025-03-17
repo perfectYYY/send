@@ -25,7 +25,7 @@ def main():
     simulator = DroneSimulator()  
 
     # 从环境变量获取凭证  
-    username = os.getenv('DRONE_USERNAME', 'user0001')  
+    username = os.getenv('DRONE_USERNAME', 'user0002')  
     password = os.getenv('DRONE_PASSWORD', 'user123')  # 默认密码策略  
     
     # 启动模拟器线程  
