@@ -1,3 +1,4 @@
+import hashlib
 import time  
 import json  
 import os  
@@ -5,20 +6,31 @@ import random
 from app.http_client import HTTPClient  
 from app.drone_simulator import DroneSimulator, DroneState  
 
-def map_to_legacy_format(state: DroneState) -> dict:  
-    """生成完全匹配 SQL 表结构的数据"""  
-    return {  
-        'altitude': round(state.altitude, 2),  
-        'speed': round(state.speed, 2),  
-        'coordinates': f"{state.longitude:.6f},{state.latitude:.6f}",  
-        'battery_level': round(state.battery, 2),  
-        'wind_speed': round(random.uniform(0.0, 15.0), 2),  
-        'position': json.dumps([  
-            round(state.pitch, 2),  
-            round(state.roll, 2),  
-            round(state.altitude, 2)  
-        ])  
-    }  
+def map_to_legacy_format(state: DroneState) -> dict:
+    """生成完全匹配 SQL 表结构的数据"""
+    # 生成数据字典
+    data = {
+        'altitude': round(state.altitude, 2),
+        'speed': round(state.speed, 2),
+        'coordinates': f"{state.longitude:.6f},{state.latitude:.6f}",
+        'battery_level': round(state.battery, 2),
+        'wind_speed': round(random.uniform(0.0, 15.0), 2),
+        'position': json.dumps([
+            round(state.pitch, 2),
+            round(state.roll, 2),
+            round(state.altitude, 2)
+        ])
+    }
+
+    # 将数据字典转换为 JSON 字符串，保证键的顺序一致
+    data_str = json.dumps(data, sort_keys=True)
+
+    # 使用 SHA-256 哈希算法对 JSON 字符串进行加密
+    hash_object = hashlib.sha256(data_str.encode())
+    hashed_data = hash_object.hexdigest()  # 获取哈希值
+
+    # 返回加密后的哈希值
+    return {'hashed_data': hashed_data} 
 
 def main():  
     client = HTTPClient()  
