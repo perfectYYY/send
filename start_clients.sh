@@ -24,7 +24,7 @@ for i in $(seq -f "%04g" 1 $CLIENT_COUNT); do
         --name "$CONTAINER_NAME" \
         -e SERVER_HOST=host.docker.internal \
         -e DRONE_USERNAME="$USERNAME" \
-        -e DRONE_PASSWORD="${USERNAME}pass" \
+        -e DRONE_PASSWORD="user123" \
         drone-client || echo "启动容器 $CONTAINER_NAME 失败"  
     
     echo "启动客户端: $CONTAINER_NAME (用户名: $USERNAME)"  
